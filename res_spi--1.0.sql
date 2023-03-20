@@ -1,4 +1,4 @@
- 
+/* 
 CREATE FUNCTION res_trans_crimes_spi(bigint, bigint, bigint)
         RETURNS bigint
         AS 'MODULE_PATHNAME', 'res_trans_crimes_spi'
@@ -25,7 +25,7 @@ CREATE FUNCTION spi_test2()
 RETURNS TABLE (beat bigint, ward bigint,zip_codes bigint[]) 
 AS 'MODULE_PATHNAME','spi_test2' 
 LANGUAGE C STRICT;
-
+*/
 
 
 

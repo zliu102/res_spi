@@ -73,16 +73,17 @@ typedef struct state_c
 #define RES_SIZE 100
 static void prepTuplestoreResult(FunctionCallInfo fcinfo);
 
-static bool initialized = false;
+
+//static bool initialized = false;
 //static int lastgroup = -1;
 //static state_c **states = NULL;
-static state_c *states_2[MAX_GROUPS];
-static int poscounts[MAX_GROUPS];
+//static state_c *states_2[MAX_GROUPS];
+//static int poscounts[MAX_GROUPS];
 //static int64 *results = NULL;
-static int64 results[MAX_GROUPS][RES_SIZE] = {0};
+//static int64 results[MAX_GROUPS][RES_SIZE] = {0};
 
 
-
+/*
 PG_FUNCTION_INFO_V1(res_trans_crimes_spi);
 Datum
 res_trans_crimes_spi(PG_FUNCTION_ARGS)
@@ -115,29 +116,6 @@ res_trans_crimes_spi(PG_FUNCTION_ARGS)
         //elog(INFO, "states_2 is %p",states_2); 
     }
 
-/*
-    if (lastgroup != group_index){
-          
-            state_c *st0 = (state_c *) palloc (sizeof(state_c));
-            elog(INFO, "st0 is %p",st0);   
-            //addr = (bytea *) palloc(sizeof(st0) + sizeof(bytea));
-            //SET_VARSIZE(addr,sizeof(st0)+sizeof(bytea));      
-            st0->poscnt = 1;
-            st0->reservoir_size = RES_SIZE;
-            //ArrayType *a = MyNew_intArrayType(RES_SIZE);
-            //elog(INFO, "a is %p",a);   
-            //st0->reservoir = a;
-            //states[group_index - 1] = st0;
-            states_2[group_index - 1] = st0;
-            //todo res[group_index - 1] = 
-            //elog(INFO, "st0 poscnt is %d,reservoir_size is %d",st0->poscnt,st0->reservoir_size);
-        
-            //memcpy(VARDATA(addr), &st0, sizeof(void *));
-            //memcpy(VARDATA(addr), &st0, sizeof(void *));
-            //initialized = true;
-
-    }*/
-
         int poscnt = poscounts[group_index - 1];
         //elog(INFO, "poscnt is %d",poscnt);//0 - postcnt -1
         if(poscnt <= RES_SIZE){
@@ -154,34 +132,7 @@ res_trans_crimes_spi(PG_FUNCTION_ARGS)
             }
             poscounts[group_index - 1] ++;
         }
-        /*
-        //void **new_ptr = (void **) VARDATA(addr);
-       // s= (state_c *) states[group_index-1];
-        state_c *s =(state_c *) states_2[group_index - 1];
-        elog(INFO, "s is %p",s);
-        elog(INFO, "s poscnt is %d,reservoir_size is %d",s->poscnt,s->reservoir_size);
-        if(s->poscnt <= s->reservoir_size){
-        //    elog(INFO, "case 1");
-            int32 p = s->poscnt;
-            //int64 *dr = (int64 *) ARR_DATA_PTR(s->reservoir);
-            //dr[p-1] = newsample;
-            results[group_index-1][p-1] = newsample;
-            
-            s->poscnt ++;
-        }else{
-        //    elog(INFO, "case 2");
-            int32 pos = rand() % s->poscnt ;
-        //    elog(INFO, "pos is %d",pos);//0 - postcnt -1
-            if(pos < s->reservoir_size){
-                //int64 *dr = (int64 *) ARR_DATA_PTR(s->reservoir);
-                //ådr[pos] = newsample;
-                results[group_index-1][pos] = newsample;
-            }
-            s->poscnt ++;
-        }*/
-        //elog(INFO, "----------------"); 
-        //lastgroup = group_index;
-        //pfree(s);
+       
         PG_RETURN_INT64(group_index);
 }
 
@@ -220,19 +171,7 @@ finalize_trans_crimes_spi(PG_FUNCTION_ARGS)
                 //result = (ArrayType *) palloc0(nbytes);
                 
                 result = construct_array((Datum *)elems, RES_SIZE , INT8OID, sizeof(int64), true, 'i');
-                /*if (ARR_NDIM(result) != 1 ){
-                     elog(INFO, "yes1");
-                 }
-                if (ARR_HASNULL(result)) {
-                    elog(INFO, "yes2");
-                }
-                if(ARR_ELEMTYPE(result) != INT8OID){
-                    elog(INFO, "yes3");
-                }
-                if (result && ARR_ELEMTYPE(result) == INT8OID) {
-                    elog(INFO, "yes4");
-                }*/
-               
+                
                 //pfree(addr);
                 //initialized = false;
                 //elog(INFO, "before retrun initialized is %d",initialized);
@@ -317,7 +256,7 @@ spi_test2(PG_FUNCTION_ARGS)
     SPI_finish();
 
     PG_RETURN_NULL();
-}
+}*/
 
 static void
 prepTuplestoreResult(FunctionCallInfo fcinfo)
